@@ -2,7 +2,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from .tasks import send_email
 from .serializers import *
 from .models import *
 
@@ -49,11 +48,10 @@ def all_subject(request):
 def result_create(request):
     serializer = ResultCreateSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
-    # send_email.delay(
-    #     email = serializer.validated_data.get('email'),
-    #     subject = serializer.validated_data.get('subject'),
-    #     message = serializer.validated_data.get('message')
-    # )
+        # subject = serializer.validated_data.get('subject'),
+        # message = serializer.validated_data.get('message')
+    # value = serializer.student_roll.get_value()
+    # print(value)
     serializer.save()
     return Response({"message": "Result create successfully."}, status=status.HTTP_201_CREATED)
 

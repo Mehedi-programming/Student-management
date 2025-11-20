@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from django.db.models import Avg
+from .tasks import send_email
 
 
 class CreateStudentSerializer(serializers.ModelSerializer):
@@ -68,7 +69,9 @@ class ResultCreateSerializer(serializers.ModelSerializer):
                     subject = subject_obj,
                     marks = marks
                 )
-                return result
+            student_mail = student_obj.email
+            send_email.delay(student_mail)
+            return result
         else:
             raise serializers.ValidationError("Marks must be between 0 to 100.")
         
